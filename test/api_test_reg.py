@@ -1,0 +1,53 @@
+import allure
+import pytest
+from page.company_api import CompanyApi
+from configyration.config_provider import ConfigProvider
+from test_data.data_provider import DataProvider
+
+
+base_url = ConfigProvider().get_api_base_url()
+
+
+
+@allure.title("Регистрация нового пользователя, негативный не указаны личные данные")
+@allure.epic("Пользователи")
+#@pytest.mark.xfail()
+def test_reg_neg(code_reg):
+    with allure.step("Подключится к API"):
+        api = CompanyApi(base_url)
+    email = DataProvider().get("email1")
+    password = DataProvider().get("password1")
+    first_name = DataProvider().get("first_name1")
+    middle_name = DataProvider().get("middle_name1")
+    last_name = DataProvider().get("last_name1")
+    resp2 = api.registration(code_reg, email, password, first_name, middle_name, last_name)
+    with allure.step("Проверить код ответа"):
+        assert resp2.status_code == 400
+    with allure.step("Проверить, что emale в теле ответа присутствуют сообщения об ошибке"):
+        assert resp2.json()["first_name"][0] == "Это поле не может быть пустым."
+        assert resp2.json()["last_name"][0] == "Это поле не может быть пустым."
+        assert resp2.json()["password"][0] == "Пароль должен содержать хотя бы одну строчную букву."
+        assert resp2.json()["password"][1] == "Убедитесь, что это значение содержит не менее 8 символов."
+
+
+
+
+@allure.title("Регистрация нового пользователя")
+@allure.epic("Пользователи")
+def test_reg(code_reg):
+    with allure.step("Подключится к API"):
+        api = CompanyApi(base_url)
+    email = DataProvider().get_email()
+    password = DataProvider().get_password()
+    first_name = DataProvider().get("first_name")
+    middle_name = DataProvider().get("middle_name")
+    last_name = DataProvider().get("last_name")
+    resp = api.registration(code_reg, email, password, first_name, middle_name, last_name)
+    with allure.step("Проверить код ответа"):
+        assert resp.status_code == 201
+    with allure.step("Проверить, что emale в теле ответа соответстует указанному при регистрации"):
+        assert resp.json()["email"] == DataProvider().get_email()
+    avatar = resp.json()["avatar"]
+    return avatar
+
+
