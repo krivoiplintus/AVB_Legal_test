@@ -9,8 +9,18 @@
   "first_name1": "",
   "middle_name1": "",
   "last_name1": "",
+  "password2": "-21Qw-erty-",
+  "password3": "@#$%&*21Qwerty",
+  "password4": "Йцукен123456",
+  "password5": "興味深い学習123456",
+  "password6": "21Qw erty",
+  "first_name2": "Andrey",
+  "middle_name2": "Vladimirovich",
+  "last_name2": "Vladimirov",
   "new_first_name": "ТестТест",
   "new_middle_name": "ТестовичТест",
   "new_last_name": "ТестовТест",
-  "new_password": "654321Qwerty"
+  "new_password": "21Qwerty",
+  "new_password1": "21Qwerty123456789Qwerty123456789Qwerty123456",
+  "new_password2": " 21Qwerty"
 }
