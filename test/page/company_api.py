@@ -7,7 +7,8 @@ class CompanyApi:
 
     def __init__(self, base_url: str) -> None:
         self.base_url = base_url
-        
+
+
     @allure.step("Получить код подтверждения для регистрации нового пользователя")
     def get_code_reg(self) -> dict:
         email = DataProvider().get_email()
@@ -17,6 +18,7 @@ class CompanyApi:
         }
         response = requests.post(self.base_url + "api/users/confirmation-code/", json=body)
         return response.json()
+
 
     @allure.step("Получить код подтверждения для восстановления пароля")
     def get_code_recover_password(self) -> dict:
@@ -28,6 +30,7 @@ class CompanyApi:
         response = requests.post(self.base_url + "api/users/confirmation-code/", json=body)
         return response.json()
 
+
     @allure.step("Регисрация")
     def registration(self, code_reg: int, email: str, password: str, first_name: str, middle_name: str, last_name: str) -> requests.Response:
         self.code_reg = code_reg
@@ -37,17 +40,18 @@ class CompanyApi:
         self.middle_name = middle_name
         self.last_name = last_name
         body = {
+            "email": self.email,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "middle_name": self.middle_name,
-            "email": self.email,
-            "password": self.password,
+            "middle_name": self.middle_name,            
             "theme": "light",
-            "is_subscribed_to_newsletter": False,
-            "code": self.code_reg           
+            "is_subscribed_to_newsletter": True,
+            "code": self.code_reg,
+            "password": self.password           
         }
         responses = requests.post(self.base_url + "api/users/registration/", json=body)
         return responses
+
 
     @allure.step("Авторизация")
     def authorization(self) -> dict:
@@ -60,6 +64,7 @@ class CompanyApi:
         responses = requests.post(self.base_url + "api/users/login/", json=body)
         return responses.json()
 
+
     @allure.step("Обновление токена")
     def refresh_token(self, refresh: str) -> dict:
         self.refresh = refresh
@@ -69,6 +74,7 @@ class CompanyApi:
         responses = requests.post(self.base_url + "api/users/refresh-token/", json=body)
         return responses.json()
 
+
     @allure.step("Получить информацию о пользователе")
     def get_user_information(self, token: str) -> dict:
         self.token = token
@@ -77,6 +83,7 @@ class CompanyApi:
         }
         responses = requests.get(self.base_url + "api/users/me/", headers=headers)
         return responses.json()
+
 
     @allure.step("Обновить информацию о пользователе")
     def update_user_information(self, token: str, avatar: str, first_name: str, middle_name: str, last_name: str) -> requests.Response:
@@ -95,9 +102,9 @@ class CompanyApi:
             "avatar": self.avatar,
             "theme": "light",
             "is_subscribed_to_newsletter": False,
-            "phone": ""
+            "phone": "+79123456789"
         }
-        responses = requests.patch(self.base_url + "/api/users/me/", headers=headers, json=body)
+        responses = requests.patch(self.base_url + "api/users/me/", headers=headers, json=body)
         return responses
 
 
@@ -117,7 +124,6 @@ class CompanyApi:
         return responses
     
 
-
     @allure.step("Восстановление пароля")
     def recover_password(self, code_recover: int, new_password: str) -> requests.Response:
         self.code_recover = code_recover
@@ -128,4 +134,63 @@ class CompanyApi:
         }
         responses = requests.post(self.base_url + "api/users/password-recovery/", json=body)
         return responses
+
+
+    @allure.step("Получить список тарифов")
+    def get_list_of_tariffs(self, token: str) -> requests.Response:
+        self.token = token
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/tariffs/", headers=headers)
+        return responses
     
+
+    @allure.step("Получить информацию 'О нас'")
+    def get_info_about_us(self, token: str) -> requests.Response:
+        self.token = token
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/info/about-us", headers=headers)
+        return responses
+
+
+    @allure.step("Получить контакты")
+    def get_info_contacts(self, token: str) -> requests.Response:
+        self.token = token
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/info/contacts", headers=headers)
+        return responses
+
+
+    @allure.step("Получить ссылки на социальные сети")
+    def get_info_social_networks(self, token: str) -> requests.Response:
+        self.token = token
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/info/social-networks", headers=headers)
+        return responses
+
+
+    @allure.step("Получить документы")
+    def get_info_documents(self, token: str) -> requests.Response:
+        self.token = token
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/info/documents", headers=headers)
+        return responses
+
+
+    @allure.step("Получить список категорий")
+    def get_legal_reference_book_list_of_categories(self, token: str) -> requests.Response:
+        self.token = token
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/info/documents", headers=headers)
+        return responses
