@@ -2,6 +2,7 @@ import allure
 import pytest
 from selenium import webdriver
 from configyration.config_provider import ConfigProvider
+from test_data.data_provider import DataProvider
 from page.company_api import CompanyApi
 
 

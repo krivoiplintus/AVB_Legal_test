@@ -1,5 +1,5 @@
 import allure
-import pytest
+import json
 from page.company_api import CompanyApi
 from configyration.config_provider import ConfigProvider
 from test_data.data_provider import DataProvider
@@ -7,17 +7,18 @@ from test_data.data_provider import DataProvider
 
 base_url = ConfigProvider().get_api_base_url()
 token = CompanyApi(base_url).authorization()["access"]
-#token = ConfigProvider().get_api_token()
+
 
 
 
 @allure.title("Изменение информации о пользователе")
 @allure.epic("Пользователи")
-@pytest.mark.xfail()
 def test_update_user_information():
     with allure.step("Подключится к API"):
         api = CompanyApi(base_url)
-    avatar = "http://verdictor.ru/media/users/avatars/" + DataProvider().get_email() + ".png"
+    with open('avatar.json', 'r', encoding='utf-8') as f:
+        avatar = json.load(f)
+        return avatar
     first_name = "Владимир"
     middle_name = "Андреевич"
     last_name = "Андреев"
@@ -365,7 +366,40 @@ def test_get_legal_reference_book_list_of_categories():
     with allure.step("Подключится к API"):
         api = CompanyApi(base_url)
     resp = api.get_legal_reference_book_list_of_categories(token)
+    list = resp.json()
+    with allure.step("Проверить код ответа"):
+        assert resp.status_code == 200
+    with allure.step("Проверить, что список не пустой"):
+        assert list != None
+
+
+@allure.title("Получение категории по идентификатору")
+@allure.epic("Правовые документы")
+def test_get_legal_reference_book_category_by_id():
+    with allure.step("Подключится к API"):
+        api = CompanyApi(base_url)
+    category_id = DataProvider().getint("category_id")
+    resp = api.get_legal_reference_book_category_by_id(token, category_id)
     result = resp.json()
     with allure.step("Проверить код ответа"):
         assert resp.status_code == 200
+    with allure.step("Проверить, что id категории соответствует запрашиваемому"):
+        assert result["id"] == category_id
 
+
+@allure.title("Поиск документов по категории и ключевой фразе")
+@allure.epic("Правовые документы")
+def test_get_legal_reference_book_search_documents_by_category():
+    with allure.step("Подключится к API"):
+        api = CompanyApi(base_url)
+    category_id = DataProvider().getint("category_id1")
+    search_data = "Об особенностях предоставления государственных услуг по регистрации транспортных средств"
+    resp = api.get_legal_reference_book_search_documents_by_category(token, category_id, search_data)
+    result = resp.json()
+    with allure.step("Проверить код ответа"):
+        assert resp.status_code == 200
+    with allure.step("Проверить, что id категории соответствует запрашиваемому"):
+        assert result["results"][0]["category"]["id"] == category_id
+    with allure.step("Проверить, что в названии присутствует запрашиваемая ключевая фраза"):
+        name = result["results"][0]["name"]
+        assert search_data in name

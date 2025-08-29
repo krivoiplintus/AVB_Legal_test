@@ -1,10 +1,9 @@
 {
-  "email": "bk9ike5xgd@mkzaso.com",
+  "email": "4gelwgw94j@qzueos.com",
   "password": "Fd98gfjdhwhd",
   "first_name": "Андрей",
   "middle_name": "Владимирович",
   "last_name": "Владимиров",
-  "email1": "bk9ike5xgd@mkzaso.com",
   "password1": "",
   "first_name1": "",
   "middle_name1": "",
@@ -20,15 +19,18 @@
   "password4": "Йцукен123456",
   "password5": "興味深い学習123456",
   "password6": "21Qw erty",
+  "password7": "werty",
+  "password8": "Qwerty123456789Qwerty123456789Qwerty123456789Qwerty123456789",
   "new_first_name": "Владимир",
   "new_middle_name": "Андреевич",
   "new_last_name": "Андреев",
   "new_password": "21Qwerty",
   "new_password1": "21Qwerty123456789Qwerty123456789Qwerty123456",
   "new_password2": " 21Qwerty",
-  "avatar": "",
   "our_email": "VerdictorOff@yandex.ru",
   "our_phone": "+7 993 080-64-34",
   "our_telegram": "https://t.me/VerdictorOFF",
-  "our_vk": "https://vk.com/verdictor"
+  "our_vk": "https://vk.com/verdictor",
+  "category_id": 1,
+  "category_id1": 10
 }

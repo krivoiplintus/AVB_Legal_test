@@ -2,7 +2,7 @@
 
 ### Для запуска тестов
 1. Склонировать проект 'git clone https://github.com/krivoiplintus/AVB_Legal_test.git'
-2. Запустить тесты 'pytest'
+2. Запустить тесты 'pytest api_test_reg.py', 'pytest api_test.py'
 3. Сгенерировать отчет 'allure generate allure-files -o allure-report'
 4. Открыть отчет 'allure open allure-report'
 

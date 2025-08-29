@@ -3,6 +3,7 @@ import requests
 from test_data.data_provider import DataProvider
 
 
+
 class CompanyApi:
 
     def __init__(self, base_url: str) -> None:
@@ -194,3 +195,31 @@ class CompanyApi:
         }
         responses = requests.get(self.base_url + "api/info/documents", headers=headers)
         return responses
+
+
+    @allure.step("Получить категорию по id")
+    def get_legal_reference_book_category_by_id(self, token: str, category_id: int) -> requests.Response:
+        self.token = token
+        self.category_id = category_id
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(f"{self.base_url}api/reference/categories/{self.category_id}/", headers=headers)
+        return responses
+
+
+    @allure.step("Поиск по категории и ключевой фразе")
+    def get_legal_reference_book_search_documents_by_category(self, token: str, category_id: int, search_data: str) -> requests.Response:
+        self.token = token
+        self.category_id = category_id
+        self.search_data = search_data
+        my_params = {
+            "category": self.category_id,
+            "search": self.search_data
+        }
+        headers = {
+            'Authorization': f'Bearer {self.token}'
+        }
+        responses = requests.get(self.base_url + "api/reference/documents/", headers=headers, params=my_params)
+        return responses
+
